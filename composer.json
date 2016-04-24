@@ -1,0 +1,26 @@
+{
+	"name": "hollodotme/inclomplete-class-accessor",
+	"description": "Class to access ALL properties of a __PHP_Incomplete_Class",
+	"minimum-stability": "dev",
+	"prefer-stable": true,
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "hollodotme",
+			"email": "hw@hollo.me"
+		}
+	],
+	"require": {
+		"php-64bit": ">=5.5"
+	},
+	"autoload": {
+		"psr-4": {
+			"hollodotme\\IncompleteClassAccessor\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Fortuneglobe\\EventSourcing\\Tests\\Unit\\": "tests/unit/"
+		}
+	}
+}

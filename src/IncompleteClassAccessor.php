@@ -1,0 +1,118 @@
+<?php
+/**
+ * @author hollodotme
+ */
+
+namespace hollodotme\IcompleteClassAccessor;
+
+/**
+ * Class IncompleteClassAccessor
+ *
+ * @package hollodotme\IcompleteClassAccessor
+ */
+class IncompleteClassAccessor
+{
+	/** @var \stdClass */
+	private $object;
+
+	/** @var string */
+	private $originalClassName;
+
+	/** @var array */
+	private $properties;
+
+	/**
+	 * @param \__PHP_Incomplete_Class $object
+	 */
+	public function __construct( \__PHP_Incomplete_Class $object )
+	{
+		$this->originalClassName = $this->loadOriginalClassName( $object );
+		$this->object            = $this->convertToStdClass( $object );
+		$this->properties        = [ ];
+
+		$this->loadProperties();
+	}
+
+	/**
+	 * @param \__PHP_Incomplete_Class $object
+	 *
+	 * @return string
+	 */
+	private function loadOriginalClassName( \__PHP_Incomplete_Class $object )
+	{
+		foreach ( $object as $property => $value )
+		{
+			if ( $property == '__PHP_Incomplete_Class_Name' )
+			{
+				return $value;
+			}
+		}
+
+		return '';
+	}
+
+	/**
+	 * @param \__PHP_Incomplete_Class $object
+	 *
+	 * @return \stdClass
+	 */
+	private function convertToStdClass( \__PHP_Incomplete_Class $object )
+	{
+		$fixKey = function ( $matches )
+		{
+			if ( isset($matches[1]) )
+			{
+				return ":" . strlen( $matches[1] ) . ":\"" . $matches[1] . "\"";
+			}
+
+			return '';
+		};
+
+		$dump = serialize( $object );
+		$dump = preg_replace( '/^O:\d+:"[^"]++"/', 'O:8:"stdClass"', $dump );
+		$dump = preg_replace_callback( '/:\d+:"\0.*?\0([^"]+)"/', $fixKey, $dump );
+
+		return unserialize( $dump );
+	}
+
+	private function loadProperties()
+	{
+		foreach ( $this->object as $property => $value )
+		{
+			if ( ($value instanceof \__PHP_Incomplete_Class) )
+			{
+				$this->properties[ $property ] = new self( $value );
+			}
+			else
+			{
+				$this->properties[ $property ] = $value;
+			}
+		}
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getOriginalClassName()
+	{
+		return $this->originalClassName;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getProperties()
+	{
+		return $this->properties;
+	}
+
+	/**
+	 * @param string $propertyName
+	 *
+	 * @return IncompleteClassAccessor|mixed|null
+	 */
+	public function getProperty( $propertyName )
+	{
+		return isset($this->properties[ $propertyName ]) ? $this->properties[ $propertyName ] : null;
+	}
+}
