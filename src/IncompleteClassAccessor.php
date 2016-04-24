@@ -40,15 +40,18 @@ class IncompleteClassAccessor
 	 */
 	private function loadOriginalClassName( \__PHP_Incomplete_Class $object )
 	{
+		$originalClassName = '';
+
 		foreach ( $object as $property => $value )
 		{
 			if ( $property == '__PHP_Incomplete_Class_Name' )
 			{
-				return $value;
+				$originalClassName = $value;
+				break;
 			}
 		}
 
-		return '';
+		return $originalClassName;
 	}
 
 	/**
@@ -60,12 +63,7 @@ class IncompleteClassAccessor
 	{
 		$fixKey = function ( $matches )
 		{
-			if ( isset($matches[1]) )
-			{
-				return ":" . strlen( $matches[1] ) . ":\"" . $matches[1] . "\"";
-			}
-
-			return '';
+			return ":" . strlen( $matches[1] ) . ":\"" . $matches[1] . "\"";
 		};
 
 		$dump = serialize( $object );

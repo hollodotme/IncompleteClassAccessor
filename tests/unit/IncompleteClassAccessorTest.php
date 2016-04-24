@@ -55,4 +55,19 @@ class IncompleteClassAccessorTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals( 'public', $accessor->getProperty( 'publicMember' ) );
 		$this->assertInstanceOf( IncompleteClassAccessor::class, $accessor->getProperty( 'memberClass' ) );
 	}
+
+	/**
+	 * @param string $filePath
+	 *
+	 * @dataProvider serializedObjectFileProvider
+	 */
+	public function testNonExistingPropertyReturnsNull( $filePath )
+	{
+		$serialized   = file_get_contents( $filePath );
+		$unserialized = unserialize( $serialized );
+
+		$accessor = new IncompleteClassAccessor( $unserialized );
+
+		$this->assertNull( $accessor->getProperty( 'notExistingProperty' ) );
+	}
 }
