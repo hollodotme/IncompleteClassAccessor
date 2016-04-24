@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/hollodotme/IncompleteClassAccessor.svg?branch=master)](https://travis-ci.org/hollodotme/IncompleteClassAccessor)
+[![Coverage Status](https://coveralls.io/repos/github/hollodotme/IncompleteClassAccessor/badge.svg?branch=master)](https://coveralls.io/github/hollodotme/IncompleteClassAccessor?branch=master)
+
 # IncompleteClassAccessor
 
 Class to access ALL properties of a __PHP_Incomplete_Class
