@@ -3,7 +3,7 @@
  * @author hollodotme
  */
 
-namespace hollodotme\IcompleteClassAccessor;
+namespace hollodotme\IncompleteClassAccessor;
 
 /**
  * Class IncompleteClassAccessor
