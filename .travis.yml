@@ -15,7 +15,6 @@ before_script:
  - git checkout $TRAVIS_BRANCH
  - sh build/tools/update_tools.sh
  - php build/tools/composer.phar install --prefer-dist -o --no-interaction
- - mkdir tests/_output
 
 script:
  - php build/tools/codecept.phar --coverage --coverage-xml
